@@ -2,13 +2,13 @@
 Created on Mar 16, 2019
 
 author: Matti Karjalainen
-Github: karjalm5
+Github: karjamatti
 email: karjamatti@gmail.com
 
 This script was used for the course project on the spring 2019 edition of the "Fixed Income" course
 at the Aalto University School of Business, Dept of Finance.
 
-The input files contain data from Thomson Reuters DataStream.
+The input files contain data from a variety of sources, but mostly from Thomson Reuters DataStream.
 
 This script calculates the theoretical relative mispricing of Inflation-linked STRIPS (TIPS STRIPS).
 
@@ -17,14 +17,13 @@ Input data:
 2. Inflation-linked STRIP prices
 3. Coupon or principal STRIP prices
 '''
+
 from scipy.interpolate import CubicSpline
 import numpy as np
 import pandas as pd
 from datetime import datetime
 
-'''
-STRING PARAMETERS
-'''
+# STRING PARAMETERS
 sep = ","
 output_file = 'STRIPS_mispricing.txt'
 dateformat = '%m/%d/%Y'

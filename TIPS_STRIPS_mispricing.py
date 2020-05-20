@@ -5,9 +5,6 @@ author: Matti Karjalainen
 Github: karjamatti
 email: karjamatti@gmail.com
 
-This script was used for the course project on the spring 2019 edition of the "Fixed Income" course
-at the Aalto University School of Business, Dept of Finance.
-
 The input files contain data from a variety of sources, but mostly from Thomson Reuters DataStream.
 
 This script calculates the theoretical relative mispricing of Inflation-linked STRIPS (TIPS STRIPS).

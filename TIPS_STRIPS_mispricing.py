@@ -32,27 +32,29 @@ dateformat2 = '%d/%m/%Y'
 enc = "utf-8"
 titles = ['Date', 'Average_Relative_Mispricing', 'Average_Maturity', 'Number_of_STRIP-pairs']
 
-'''
-INPUT FILES
-'''
-# INFLATION SWAPS
-# This file should consist of the daily inflation swap rates for different maturities
-# First column should contain date (m/d/y), and other columns should have...
-# ...inflation swap rates with maturities 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30
+
+# INPUT FILES
+''' INFLATION SWAPS
+This file should consist of the daily inflation swap rates for different maturities
+First column should contain date (m/d/y), and other columns should have
+inflation swap rates with maturities 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20, 25, 30'''
+
 swaps = pd.read_csv('swaps.csv', sep = sep)
 
-# INFLATION LINKED STRIPS
-# This file should contain the prices of coupons stripped from inflation-linked bonds
-# First column should contain date (m/d/y), and other columns should have...
-# ...coupon prices for different maturity dates, where the maturity is the column header (d/m/y)
+''' INFLATION LINKED STRIPS
+This file should contain the prices of coupons stripped from inflation-linked bonds
+First column should contain date (m/d/y), and other columns should have
+coupon prices for different maturity dates, where the maturity is the column header (d/m/y)'''
+
 infstrips = pd.read_csv('infstrips.csv', sep = sep)
 infstrips = infstrips.loc[:, ~infstrips.columns.str.replace("(\.\d+)$", "").duplicated()] # This is to get rid of duplicate columns in the data
 infstrips = infstrips.dropna(how='all', axis=1)
 
-# COUPON STRIPS
-# This file should contain the prices of coupons stripped from regular bonds
-# First column should contain date (m/d/y), and other columns should have...
-# ...coupon prices for different maturity dates, where the maturity is the column header (d/m/y)
+'''COUPON STRIPS
+This file should contain the prices of coupons stripped from regular bonds
+First column should contain date (m/d/y), and other columns should have
+coupon prices for different maturity dates, where the maturity is the column header (d/m/y)'''
+
 cstrips = pd.read_csv('cstrips.csv', sep = sep)
 cstrips = cstrips.loc[:, ~cstrips.columns.str.replace("(\.\d+)$", "").duplicated()] # This is to get rid of duplicate columns in the data
 cstrips = cstrips.dropna(how='all', axis=1)
@@ -66,25 +68,22 @@ pstrips = pstrips.dropna(how='all', axis=1)
 # This is to decide whther to use coupon or principal strips. Should not make that big of a difference really..
 strips = cstrips
 
-'''
-DATE & MATURITY LISTS
-'''
+
+# DATE & MATURITY LISTS
 dates = infstrips.loc[:, 'Unnamed: 0'] # Get the series of observation dates from the infstrips-file
 is_mat = infstrips.columns.values.tolist()[1:] # Get the list of maturities (dates) for the inflation-linked strips
 st_mat = strips.columns.values.tolist()[1:] # Get the list of maturities (dates) for the regular strips
 sw_mat = list(swaps.columns.values)[1:] # Get the list of maturities (years) for the inflation swaps
 
-'''
-LOOP COUNTERS FOR DATAFRAMES
-'''
+
+# LOOP COUNTERS FOR DATAFRAMES
 cols = dates.shape[0]
 is_rows = len(is_mat)
 st_rows = len(st_mat)
 sw_rows = len(sw_mat)
 
-'''
-HELPER FUNCTIONS
-'''
+
+# HELPER FUNCTIONS
 def find_spline(x, y): # This function returns the spline for interpolating mismatched maturities
     x = [float(i) for i in x]
     y = [float(i) for i in y]
@@ -126,9 +125,8 @@ def write_results(vec): # Writes the time series of average mispricing and matur
         output.write(str(key) + " " + str(value) + "\n")
     output.close()
 
-'''
-MAIN FUNCTION
-'''
+
+# MAIN FUNCTION
 def main():
 
     mastervec = [] # INITIALIZE TIME-SERIES VECTOR OF RESULTS
